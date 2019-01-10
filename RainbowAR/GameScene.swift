@@ -45,7 +45,7 @@ class GameScene: SKScene {
                 direction = 0
             }
             
-            if Int(player.position.y) + Int(direction) >= -232 && Int(player.position.y) + Int(direction) <= 232 {
+            if Int(player.position.y) + Int(direction) >= -332 && Int(player.position.y) + Int(direction) <= 332 {
                 moving = true
                 
                 let moveAction = SKAction.moveBy(x: 0, y: direction, duration: 0.3)
