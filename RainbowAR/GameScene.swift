@@ -38,9 +38,9 @@ class GameScene: SKScene {
             
             switch state {
             case .up:
-                direction = 116
+                direction = 100
             case .down:
-                direction = -116
+                direction = -100
             case .neutral:
                 direction = 0
             }
