@@ -11,13 +11,17 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    private var playerNode: Player?
+    var playerNode: Player?
+    var pointNode: Point?
     var moving: Bool = false
     
     var generator: UIImpactFeedbackGenerator!
     
+    var scorePosition: CGPoint?
+    
     override func didMove(to view: SKView) {
         playerNode = self.childNode(withName: "player") as? Player
+        pointNode = self.childNode(withName: "point") as? Point
         
         generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
@@ -65,7 +69,15 @@ class GameScene: SKScene {
         
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+//    override func update(_ currentTime: TimeInterval) {
+//        // Called before each frame is rendered
+//    }
+    
+    func updatePoint(state: pointState) {
+        
+    }
+    
+    func movePoint(state: pointState) {
+        
     }
 }
