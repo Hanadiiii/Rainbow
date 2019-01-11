@@ -14,7 +14,9 @@ class GameViewController: UIViewController, ARSessionDelegate {
     
     var gameScene: GameScene!
     var session: ARSession!
-
+    
+    var currentScore: Int = 0 //keeps track of the user's current score
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,15 +30,16 @@ class GameViewController: UIViewController, ARSessionDelegate {
                 
                 // Present the scene
                 view.presentScene(gameScene)
+                
             }
-            
             view.ignoresSiblingOrder = true
-            
             view.showsFPS = false
             view.showsNodeCount = false
             
             session = ARSession()
             session.delegate = self
+            
+            generateNewPoint()
         }
     }
     
@@ -49,11 +52,11 @@ class GameViewController: UIViewController, ARSessionDelegate {
         
         session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
     }
-
+    
     override var shouldAutorotate: Bool {
-        return true
+        return false
     }
-
+    
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
             return .portrait
@@ -61,7 +64,7 @@ class GameViewController: UIViewController, ARSessionDelegate {
             return .all
         }
     }
-
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -77,7 +80,7 @@ class GameViewController: UIViewController, ARSessionDelegate {
         var blendShapes: [ARFaceAnchor.BlendShapeLocation : Any] = faceAnchor.blendShapes
         
         guard let browInnerUp = blendShapes[.browInnerUp] as? Float else { return }
-        print(browInnerUp)
+        //        print(browInnerUp)
         
         if browInnerUp > 0.5 {
             gameScene.updatePlayer(state: .up)
@@ -88,16 +91,28 @@ class GameViewController: UIViewController, ARSessionDelegate {
         }
     }
     
-    func generateNewPoint() {
+    func generateNewPoint() { //generates new random position for the point emoji node
         
-        let positionArray = [300, 200, 100, 0, -100, -200, -300]
-        let pointRandomY = (positionArray.randomElement()!)
-        let playerPositionY = Int((gameScene.playerNode?.position.y)!)
-
+        guard let pointRandomY = (gameScene.pointPositionArray.randomElement()) else { return } //uses gamescene pointPositionArray for possible values
+        
+        let playerPositionY = gameScene.playerNode.position.y
+        
         if pointRandomY == playerPositionY {
             generateNewPoint()
         } else {
-            self.gameScene.scorePosition = CGPoint(x: 0, y: pointRandomY)
+            self.gameScene.pointNode.position = CGPoint(x: 0, y: pointRandomY)
         }
     }
+
+    /*func checkForScore() {
+        
+        let playerPositionY = gameScene.playerNode.position.y
+        let pointPositionY = gameScene.pointNode.position.y
+        
+        if playerPositionY == pointPositionY {
+            currentScore += 1
+            gameScene.currentScoreLabel.text = "\(currentScore)"
+            generateNewPoint()
+        }
+    }*/
 }
