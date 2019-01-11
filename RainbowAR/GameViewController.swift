@@ -32,8 +32,8 @@ class GameViewController: UIViewController, ARSessionDelegate {
             
             view.ignoresSiblingOrder = true
             
-            view.showsFPS = true
-            view.showsNodeCount = true
+            view.showsFPS = false
+            view.showsNodeCount = false
             
             session = ARSession()
             session.delegate = self
@@ -67,7 +67,6 @@ class GameViewController: UIViewController, ARSessionDelegate {
     }
     
     // MARK: - ARSession Delegate
-    
     func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
         if let faceAnchor = anchors.first as? ARFaceAnchor {
             update(withFaceAnchor: faceAnchor)
@@ -86,6 +85,19 @@ class GameViewController: UIViewController, ARSessionDelegate {
             gameScene.updatePlayer(state: .down)
         } else {
             gameScene.updatePlayer(state: .neutral)
+        }
+    }
+    
+    func generateNewPoint() {
+        
+        let positionArray = [300, 200, 100, 0, -100, -200, -300]
+        let pointRandomY = (positionArray.randomElement()!)
+        let playerPositionY = Int((gameScene.playerNode?.position.y)!)
+
+        if pointRandomY == playerPositionY {
+            generateNewPoint()
+        } else {
+            self.gameScene.scorePosition = CGPoint(x: 0, y: pointRandomY)
         }
     }
 }
