@@ -38,8 +38,6 @@ class GameViewController: UIViewController, ARSessionDelegate {
             
             session = ARSession()
             session.delegate = self
-            
-            generateNewPoint()
         }
     }
     
@@ -90,29 +88,4 @@ class GameViewController: UIViewController, ARSessionDelegate {
             gameScene.updatePlayer(state: .neutral)
         }
     }
-    
-    func generateNewPoint() { //generates new random position for the point emoji node
-        
-        guard let pointRandomY = (gameScene.pointPositionArray.randomElement()) else { return } //uses gamescene pointPositionArray for possible values
-        
-        let playerPositionY = gameScene.playerNode.position.y
-        
-        if pointRandomY == playerPositionY {
-            generateNewPoint()
-        } else {
-            self.gameScene.pointNode.position = CGPoint(x: 0, y: pointRandomY)
-        }
-    }
-
-    /*func checkForScore() {
-        
-        let playerPositionY = gameScene.playerNode.position.y
-        let pointPositionY = gameScene.pointNode.position.y
-        
-        if playerPositionY == pointPositionY {
-            currentScore += 1
-            gameScene.currentScoreLabel.text = "\(currentScore)"
-            generateNewPoint()
-        }
-    }*/
 }
