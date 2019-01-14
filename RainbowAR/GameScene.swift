@@ -18,7 +18,8 @@ class GameScene: SKScene {
     var playButton: SKShapeNode!
     var currentScoreLabel: SKLabelNode!
     var faceNotVisibleLabel: SKLabelNode!
-    var moving: Bool = false
+    var playerIsMoving: Bool = false
+    var currentScore = 0
     
     var generator: UIImpactFeedbackGenerator!
     
@@ -30,92 +31,107 @@ class GameScene: SKScene {
         pointNode = self.childNode(withName: "point") as! Point
         
         currentScoreLabel = self.childNode(withName: "currentScore") as? SKLabelNode
-        currentScoreLabel.isHidden = true
+        currentScoreLabel.text = "\(currentScore)"
+        //        currentScoreLabel.isHidden = true
         
         faceNotVisibleLabel = self.childNode(withName: "faceNotVisible") as? SKLabelNode
         faceNotVisibleLabel.isHidden = true
         
         playerNode.position = CGPoint(x: 0, y: 0) //sets default position of the player to center of view
         
-        guard let pointPositionY = pointPositionArray.randomElement() else { return } //randomizes point position
+        updatePoint()
         
-        pointNode.texture = SKTexture(imageNamed: PointState.random()) // randomized emoji for pointNode
-        pointNode.position = CGPoint(x: 0, y: pointPositionY) // initial point position
-        
-        generator = UIImpactFeedbackGenerator(style: .light)
+        generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()
         
         /* //This code creates a play button, but this button doesn't do anything yet
-        playButton = SKShapeNode()
-        playButton.name = "play_button"
-        playButton.zPosition = 1
-        playButton.position = CGPoint(x: 0, y: 0)
-        playButton.fillColor = SKColor.black
-        let topCorner = CGPoint(x: -50, y: 50)
-        let bottomCorner = CGPoint(x: -50, y: -50)
-        let middle = CGPoint(x: 50, y: 0)
-        let path = CGMutablePath()
-        path.addLine(to: topCorner)
-        path.addLines(between: [topCorner, bottomCorner, middle])
-        playButton.path = path
-        self.addChild(playButton)
-        */
+         playButton = SKShapeNode()
+         playButton.name = "play_button"
+         playButton.zPosition = 1
+         playButton.position = CGPoint(x: 0, y: 0)
+         playButton.fillColor = SKColor.black
+         let topCorner = CGPoint(x: -50, y: 50)
+         let bottomCorner = CGPoint(x: -50, y: -50)
+         let middle = CGPoint(x: 50, y: 0)
+         let path = CGMutablePath()
+         path.addLine(to: topCorner)
+         path.addLines(between: [topCorner, bottomCorner, middle])
+         playButton.path = path
+         self.addChild(playButton)
+         */
     }
     
     // MARK: - Player Movement Functions
     
     func updatePlayer (state: PlayerState) { //updatePlayer is called when eyebrows move. If the player is not already moving, this function calls movePlayer
-        if !moving {
+        if !playerIsMoving {
             movePlayer(state: state)
         }
     }
     
     func movePlayer (state: PlayerState) { //This function is responsible for moving the player up, down, or keeping it neutral
-      
-            playerNode.texture = SKTexture(imageNamed: state.rawValue)
+        
+        playerNode.texture = SKTexture(imageNamed: state.rawValue)
+        var vibrate: Bool = false
+        var direction: Int = 0
+        
+        switch state {
+        case .up:
+            direction = 100
+            vibrate = true
+        case .down:
+            direction = -100
+            vibrate = true
+        case .neutral:
+            direction = 0
+            vibrate = false
+        }
+        
+        if Int(playerNode.position.y) + Int(direction) >= -332 && Int(playerNode.position.y) + Int(direction) <= 332 {
+            playerIsMoving = true
             
-            var direction: CGFloat = 0
+            let moveAction = SKAction.moveBy(x: 0, y: CGFloat(direction), duration: 0.3)
             
-            switch state {
-            case .up:
-                direction = 100
-            case .down:
-                direction = -100
-            case .neutral:
-                direction = 0
-            }
-            
-            if Int(playerNode.position.y) + Int(direction) >= -332 && Int(playerNode.position.y) + Int(direction) <= 332 {
-                moving = true
-                
-                let moveAction = SKAction.moveBy(x: 0, y: direction, duration: 0.3)
-                
-                let moveEndedAction = SKAction.run {
-                    self.moving = false
-                    if direction != 0 {
-                        self.generator.impactOccurred()
-                    }
+            let moveEndedAction = SKAction.run {
+                self.playerIsMoving = false
+                if vibrate {
+                    self.generator.impactOccurred()
                 }
-            
-                let moveSequence = SKAction.sequence([moveAction, moveEndedAction])
-                
-//                game.checkForScore()
-                
-                playerNode.run(moveSequence)
+                self.checkForScore()
             }
+            
+            let moveSequence = SKAction.sequence([moveAction, moveEndedAction])
+            
+            playerNode.run(moveSequence)
+            
+            print("😀 Player: \(playerNode.position.y)")
+        }
     }
     
     // MARK: - Point movement functions
     
-    func updatePoint(state: PointState) { //In theory, this function will be called after the player has touched the current point
+    func updatePoint(state: PointImage = PointImage.random()) { //this function will be called after the player has touched the current point
+        guard let newRandomPointPositionY = pointPositionArray.randomElement() else { return } //randomizes point position
+        let newRandomPointTexture = SKTexture(imageNamed: PointImage.random().rawValue)
+        let currentPlayerPositionY = playerNode.position.y
         
+        if newRandomPointPositionY == currentPlayerPositionY {
+            updatePoint()
+        } else {
+            pointNode.texture = newRandomPointTexture // randomized emoji for pointNode
+            pointNode.position = CGPoint(x: 0, y: newRandomPointPositionY) // new random point position
+            print("🌟 Point: \(pointNode.position.y)")
+        }
     }
     
-    func movePoint(state: PointState) { //This function should be called in order to move the player (but it's possible that the movement could happen in updatePoint function above)
+    func checkForScore() {
+        let currentPlayerPositionY = playerNode.position.y
+        let currentPointPositionY = pointNode.position.y
         
+        if currentPlayerPositionY <= currentPointPositionY + 1 && currentPlayerPositionY >= currentPointPositionY - 1 {
+            currentScore += 1
+            currentScoreLabel.text = "\(currentScore)"
+            updatePoint()
+        }
     }
-    
-    //    override func update(_ currentTime: TimeInterval) { //DO WE NEED THIS FUNCTION???
-    //        // Called before each frame is rendered
-    //    }
 }
