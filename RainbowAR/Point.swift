@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-enum PointState: String {
+enum PointImage: String {
     case unicorn = "Unicorn"
     case apple = "Apple"
     case burrito = "Burrito"
@@ -16,10 +16,10 @@ enum PointState: String {
     case icecream = "Icecream"
     case pancake = "Pancake"
     
-    static func random() -> String {
-        let emojiToGetRandomly = [PointState.unicorn, PointState.apple, PointState.burrito, PointState.fries, PointState.icecream, PointState.pancake]
+    static func random() -> PointImage {
+        let emojiToGetRandomly = [PointImage.unicorn, PointImage.apple, PointImage.burrito, PointImage.fries, PointImage.icecream, PointImage.pancake]
         let index = Int(arc4random_uniform(UInt32(emojiToGetRandomly.count)))
-        let emoji = emojiToGetRandomly[index].rawValue
+        let emoji = emojiToGetRandomly[index]
         return emoji
     }
 }
