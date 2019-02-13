@@ -15,6 +15,8 @@
 		1BDC79F321E7E52700C67FF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BDC79F121E7E52700C67FF2 /* Main.storyboard */; };
 		1BDC79F521E7E52900C67FF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BDC79F421E7E52900C67FF2 /* Assets.xcassets */; };
 		1BDC79F821E7E52900C67FF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BDC79F621E7E52900C67FF2 /* LaunchScreen.storyboard */; };
+		1BDC7A0021E7EB8A00C67FF2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BDC79FF21E7EB8A00C67FF2 /* Player.swift */; };
+		7E7715C721E8134800B79771 /* Point.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7715C621E8134800B79771 /* Point.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		1BDC79F421E7E52900C67FF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1BDC79F721E7E52900C67FF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1BDC79F921E7E52900C67FF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1BDC79FF21E7EB8A00C67FF2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		7E7715C621E8134800B79771 /* Point.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Point.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,12 +66,14 @@
 			children = (
 				1BDC79E721E7E52700C67FF2 /* AppDelegate.swift */,
 				1BDC79E921E7E52700C67FF2 /* GameScene.sks */,
-				1BDC79EB21E7E52700C67FF2 /* Actions.sks */,
 				1BDC79ED21E7E52700C67FF2 /* GameScene.swift */,
+				1BDC79FF21E7EB8A00C67FF2 /* Player.swift */,
+				7E7715C621E8134800B79771 /* Point.swift */,
 				1BDC79EF21E7E52700C67FF2 /* GameViewController.swift */,
 				1BDC79F121E7E52700C67FF2 /* Main.storyboard */,
 				1BDC79F421E7E52900C67FF2 /* Assets.xcassets */,
 				1BDC79F621E7E52900C67FF2 /* LaunchScreen.storyboard */,
+				1BDC79EB21E7E52700C67FF2 /* Actions.sks */,
 				1BDC79F921E7E52900C67FF2 /* Info.plist */,
 			);
 			path = RainbowAR;
@@ -146,6 +152,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1BDC7A0021E7EB8A00C67FF2 /* Player.swift in Sources */,
+				7E7715C721E8134800B79771 /* Point.swift in Sources */,
 				1BDC79EE21E7E52700C67FF2 /* GameScene.swift in Sources */,
 				1BDC79F021E7E52700C67FF2 /* GameViewController.swift in Sources */,
 				1BDC79E821E7E52700C67FF2 /* AppDelegate.swift in Sources */,
@@ -304,7 +312,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.stevelederer.RainbowAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -322,7 +330,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.stevelederer.RainbowAR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
